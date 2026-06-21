@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Canopy — Your personal environmental operating system. Track, visualize, and reduce your carbon footprint with stunning visuals and intelligent insights." />
+  <meta name="theme-color" content="#050505" />
+  <title>Canopy — Personal Environmental Operating System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/css/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════ GRAIN OVERLAY ═══════════ -->
+  <div id="grain-overlay"></div>
+
+  <!-- ═══════════ AMBIENT ORBS ═══════════ -->
+  <div id="ambient-orb-1"></div>
+  <div id="ambient-orb-2"></div>
+
+  <!-- ═══════════ SPLASH SCREEN ═══════════ -->
+  <div id="splash-screen">
+    <div class="splash-content">
+      <div class="splash-icon-wrap">
+        <svg class="splash-leaf" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="url(#sg1)" stroke-width="1.5"/>
+          <path d="M20 4C20 4,30 12,30 20C30 28,20 36,20 36C20 36,10 28,10 20C10 12,20 4,20 4Z" fill="url(#sg2)" opacity="0.85"/>
+          <defs>
+            <linearGradient id="sg1" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#6EE7B7"/><stop offset="1" stop-color="#065F46"/></linearGradient>
+            <linearGradient id="sg2" x1="20" y1="4" x2="20" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#34D399"/><stop offset="1" stop-color="#064E3B"/></linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h1 class="splash-wordmark">Canopy</h1>
+      <p class="splash-tagline">Personal Environmental Intelligence</p>
+      <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ AUTH SCREEN ═══════════ -->
+  <div id="auth-screen" style="display:none">
+    <div class="auth-bg">
+      <div class="auth-glow"></div>
+      <div class="auth-card">
+        <svg class="auth-logo" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="url(#ag1)" stroke-width="1.5"/>
+          <path d="M20 4C20 4,30 12,30 20C30 28,20 36,20 36C20 36,10 28,10 20C10 12,20 4,20 4Z" fill="url(#ag2)" opacity="0.85"/>
+          <defs>
+            <linearGradient id="ag1" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#6EE7B7"/><stop offset="1" stop-color="#065F46"/></linearGradient>
+            <linearGradient id="ag2" x1="20" y1="4" x2="20" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#34D399"/><stop offset="1" stop-color="#064E3B"/></linearGradient>
+          </defs>
+        </svg>
+        <h1 class="auth-h">Welcome to Canopy</h1>
+        <p class="auth-sub">Track, visualize, and reduce your environmental impact — built for India.</p>
+        <button class="g-btn" id="g-btn" onclick="handleGoogleSignIn()">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          <span>Continue with Google</span>
+        </button>
+        <p class="auth-fine">By continuing, you agree to our Terms &amp; Privacy Policy</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ONBOARDING WIZARD (6 STEPS) ═══════════ -->
+  <div id="onboarding-wizard" class="wiz-overlay" style="display:none">
+    <div class="wiz-card">
+      <div class="wiz-top">
+        <div class="wiz-logo-row">
+          <svg viewBox="0 0 40 40" fill="none" style="width:24px;height:24px;"><circle cx="20" cy="20" r="18" stroke="#34D399" stroke-width="1.5"/><path d="M20 4C20 4,30 12,30 20C30 28,20 36,20 36C20 36,10 28,10 20C10 12,20 4,20 4Z" fill="#065F46" opacity="0.85"/></svg>
+          <span class="wiz-brand">Canopy</span>
+        </div>
+        <button class="wiz-skip" onclick="skipWizard()">Skip →</button>
+      </div>
+      <div class="wiz-progress"><div class="wiz-prog-fill" id="wiz-prog"></div></div>
+      <span class="wiz-step-lbl" id="wiz-step-lbl">1 / 6</span>
+
+      <div id="wiz-steps">
+        <!-- Step 1: Transport -->
+        <div class="wiz-step" id="ws-1">
+          <div class="wiz-icon">🚗</div>
+          <h2 class="wiz-title">How do you get around?</h2>
+          <p class="wiz-desc">Transportation is typically the largest source of emissions for urban Indians.</p>
+          <div class="wiz-fields">
+            <label class="wiz-lbl">Primary commute mode</label>
+            <div class="chip-grid" id="cg-transport">
+              <button class="chip" data-v="car" onclick="pickChip('transport',this)">🚗 Car</button>
+              <button class="chip" data-v="two-wheeler" onclick="pickChip('transport',this)">🏍️ Two-Wheeler</button>
+              <button class="chip" data-v="auto" onclick="pickChip('transport',this)">🛺 Auto</button>
+              <button class="chip" data-v="metro" onclick="pickChip('transport',this)">🚇 Metro</button>
+              <button class="chip" data-v="bus" onclick="pickChip('transport',this)">🚌 Bus</button>
+              <button class="chip" data-v="cycle" onclick="pickChip('transport',this)">🚲 Cycle</button>
+              <button class="chip" data-v="walk" onclick="pickChip('transport',this)">🚶 Walk</button>
+            </div>
+            <label class="wiz-lbl">Weekly commute distance</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="wz-km" min="0" max="500" value="60" oninput="wzSlider('km',this.value+' km')"><span class="slider-val" id="wz-v-km">60 km</span></div>
+          </div>
+        </div>
+
+        <!-- Step 2: Food -->
+        <div class="wiz-step" id="ws-2" style="display:none">
+          <div class="wiz-icon">🍛</div>
+          <h2 class="wiz-title">Your food habits</h2>
+          <p class="wiz-desc">Food production accounts for 26% of global greenhouse emissions.</p>
+          <div class="wiz-fields">
+            <label class="wiz-lbl">Diet type</label>
+            <div class="chip-grid" id="cg-diet">
+              <button class="chip" data-v="vegan" onclick="pickChip('diet',this)">🌱 Vegan</button>
+              <button class="chip" data-v="vegetarian" onclick="pickChip('diet',this)">🥦 Vegetarian</button>
+              <button class="chip" data-v="eggetarian" onclick="pickChip('diet',this)">🥚 Eggetarian</button>
+              <button class="chip" data-v="non-veg" onclick="pickChip('diet',this)">🍗 Non-Veg</button>
+              <button class="chip" data-v="heavy-meat" onclick="pickChip('diet',this)">🥩 Heavy Non-Veg</button>
+            </div>
+            <label class="wiz-lbl">Non-veg meals per week</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="wz-meat" min="0" max="21" value="4" oninput="wzSlider('meat',this.value+' meals')"><span class="slider-val" id="wz-v-meat">4 meals</span></div>
+            <label class="wiz-lbl">Food delivery orders per week</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="wz-delivery" min="0" max="14" value="3" oninput="wzSlider('delivery',this.value+' orders')"><span class="slider-val" id="wz-v-delivery">3 orders</span></div>
+          </div>
+        </div>
+
+        <!-- Step 3: Energy -->
+        <div class="wiz-step" id="ws-3" style="display:none">
+          <div class="wiz-icon">⚡</div>
+          <h2 class="wiz-title">Home energy</h2>
+          <p class="wiz-desc">India's coal-heavy grid makes electricity a key emission source.</p>
+          <div class="wiz-fields">
+            <label class="wiz-lbl">People in household</label>
+            <div class="chip-grid" id="cg-household">
+              <button class="chip" data-v="1" onclick="pickChip('household',this)">1</button>
+              <button class="chip" data-v="2" onclick="pickChip('household',this)">2</button>
+              <button class="chip" data-v="4" onclick="pickChip('household',this)">3–4</button>
+              <button class="chip" data-v="6" onclick="pickChip('household',this)">5+</button>
+            </div>
+            <label class="wiz-lbl">Monthly electricity bill (₹)</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="wz-elec" min="200" max="15000" step="100" value="2500" oninput="wzSlider('elec','₹'+this.value)"><span class="slider-val" id="wz-v-elec">₹2500</span></div>
+            <label class="wiz-lbl">AC usage in summer</label>
+            <div class="chip-grid" id="cg-ac">
+              <button class="chip" data-v="none" onclick="pickChip('ac',this)">🌀 No AC</button>
+              <button class="chip" data-v="moderate" onclick="pickChip('ac',this)">❄️ Few hours</button>
+              <button class="chip" data-v="heavy" onclick="pickChip('ac',this)">🧊 All day</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Shopping -->
+        <div class="wiz-step" id="ws-4" style="display:none">
+          <div class="wiz-icon">📦</div>
+          <h2 class="wiz-title">Shopping habits</h2>
+          <p class="wiz-desc">Online shopping and fast fashion drive packaging and logistics emissions.</p>
+          <div class="wiz-fields">
+            <label class="wiz-lbl">Online orders per month</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="wz-orders" min="0" max="30" value="6" oninput="wzSlider('orders',this.value+' orders')"><span class="slider-val" id="wz-v-orders">6 orders</span></div>
+            <label class="wiz-lbl">Clothing items per year</label>
+            <div class="chip-grid" id="cg-clothing">
+              <button class="chip" data-v="5" onclick="pickChip('clothing',this)">Minimal (1–5)</button>
+              <button class="chip" data-v="15" onclick="pickChip('clothing',this)">Moderate (6–20)</button>
+              <button class="chip" data-v="35" onclick="pickChip('clothing',this)">High (21–50)</button>
+              <button class="chip" data-v="60" onclick="pickChip('clothing',this)">Very High (50+)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5: Travel -->
+        <div class="wiz-step" id="ws-5" style="display:none">
+          <div class="wiz-icon">✈️</div>
+          <h2 class="wiz-title">Air travel</h2>
+          <p class="wiz-desc">A single flight can equal months of daily emissions.</p>
+          <div class="wiz-fields">
+            <label class="wiz-lbl">Flights per year</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="wz-flights" min="0" max="20" value="2" oninput="wzSlider('flights',this.value+' flights')"><span class="slider-val" id="wz-v-flights">2 flights</span></div>
+            <label class="wiz-lbl">Typical flight distance</label>
+            <div class="chip-grid" id="cg-flighttype">
+              <button class="chip" data-v="domestic" onclick="pickChip('flighttype',this)">🇮🇳 Domestic</button>
+              <button class="chip" data-v="short-intl" onclick="pickChip('flighttype',this)">🌏 Short Intl</button>
+              <button class="chip" data-v="long-intl" onclick="pickChip('flighttype',this)">🌍 Long Intl</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6: Waste & Water -->
+        <div class="wiz-step" id="ws-6" style="display:none">
+          <div class="wiz-icon">♻️</div>
+          <h2 class="wiz-title">Waste & water</h2>
+          <p class="wiz-desc">Small changes in waste management and water use have a large cumulative impact.</p>
+          <div class="wiz-fields">
+            <label class="wiz-lbl">Do you segregate waste?</label>
+            <div class="chip-grid" id="cg-waste">
+              <button class="chip" data-v="yes" onclick="pickChip('waste',this)">✅ Yes</button>
+              <button class="chip" data-v="no" onclick="pickChip('waste',this)">❌ No</button>
+            </div>
+            <label class="wiz-lbl">Daily water usage (litres)</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="wz-water" min="20" max="500" value="120" oninput="wzSlider('water',this.value+' L')"><span class="slider-val" id="wz-v-water">120 L</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wiz-bottom">
+        <div class="wiz-dots" id="wiz-dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div class="wiz-btns">
+          <button class="wiz-back" id="wiz-back" onclick="wizBack()" style="visibility:hidden">← Back</button>
+          <button class="wiz-next" id="wiz-next" onclick="wizNext()">Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ APP SHELL ═══════════ -->
+  <div class="app" id="app" style="display:none">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-brand">
+        <svg viewBox="0 0 40 40" fill="none" style="width:28px;height:28px;">
+          <circle cx="20" cy="20" r="18" stroke="url(#sbg)" stroke-width="1.5"/>
+          <path d="M20 4C20 4,30 12,30 20C30 28,20 36,20 36C20 36,10 28,10 20C10 12,20 4,20 4Z" fill="url(#sbf)" opacity="0.85"/>
+          <defs><linearGradient id="sbg" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#6EE7B7"/><stop offset="1" stop-color="#065F46"/></linearGradient><linearGradient id="sbf" x1="20" y1="4" x2="20" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#34D399"/><stop offset="1" stop-color="#064E3B"/></linearGradient></defs>
+        </svg>
+        <span class="sb-name">Canopy</span>
+      </div>
+
+      <div class="sb-user" onclick="openDrawer('settings')">
+        <div class="sb-avatar" id="sb-avatar"><span id="sb-initials">CU</span></div>
+        <div class="sb-user-info"><p class="sb-uname" id="sb-uname">Canopy User</p><p class="sb-urole">Canopy Explorer</p></div>
+        <span class="sb-chevron">›</span>
+      </div>
+
+      <nav class="sb-nav">
+        <button class="sb-item active" id="sn-home" onclick="goPage('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>
+          <span>Home</span>
+        </button>
+        <button class="sb-item" id="sn-earth" onclick="goPage('earth')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>Earth Twin</span>
+        </button>
+        <button class="sb-item" id="sn-analytics" onclick="goPage('analytics')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Analytics</span>
+        </button>
+        <button class="sb-item" id="sn-simulate" onclick="goPage('simulate')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span>Simulate</span>
+        </button>
+        <button class="sb-item" id="sn-legacy" onclick="goPage('legacy')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span>Legacy</span>
+        </button>
+      </nav>
+
+      <div class="sb-footer">
+        <div class="sb-budget">
+          <div class="sb-budget-info"><span class="sb-budget-lbl">MONTHLY BUDGET</span><span class="sb-budget-val" id="sb-budget-val">0 / 200 kg</span></div>
+          <div class="sb-budget-track"><div class="sb-budget-fill" id="sb-budget-fill"></div></div>
+        </div>
+        <button class="sb-signout" onclick="handleSignOut()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- MOBILE NAV -->
+    <nav class="mob-nav">
+      <button class="mn active" id="mn-home" onclick="goPage('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg><span>Home</span></button>
+      <button class="mn" id="mn-earth" onclick="goPage('earth')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/></svg><span>Earth</span></button>
+      <button class="mn" id="mn-analytics" onclick="goPage('analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Stats</span></button>
+      <button class="mn" id="mn-simulate" onclick="goPage('simulate')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg><span>Simulate</span></button>
+      <button class="mn" id="mn-legacy" onclick="goPage('legacy')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Legacy</span></button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main" id="main-scroll">
+
+      <!-- ═══ HOME PAGE ═══ -->
+      <section class="pg active" id="pg-home">
+        <div class="pg-head">
+          <div><p class="pg-eyebrow" id="date-text"></p><h1 class="pg-title" id="greeting"></h1></div>
+          <div class="head-actions">
+            <button class="icon-btn" id="quick-log-btn" onclick="openQuickLog()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <button class="icon-btn" onclick="openDrawer('notifs')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <div class="notif-dot" id="notif-dot"></div>
+            </button>
+          </div>
+        </div>
+
+        <!-- HERO CARD -->
+        <div class="hero-card" id="hero-card">
+          <div class="hero-ring-wrap">
+            <canvas id="hero-ring" width="200" height="200"></canvas>
+            <div class="hero-ring-center">
+              <span class="hero-ring-pct" id="hero-ring-pct">0%</span>
+              <span class="hero-ring-label">of daily budget</span>
+            </div>
+          </div>
+          <div class="hero-info">
+            <div class="hero-total-wrap">
+              <span class="hero-total" id="hero-total">0.0</span>
+              <span class="hero-total-unit">kg CO₂ today</span>
+            </div>
+            <div class="hero-metrics">
+              <div class="hero-metric">
+                <span class="hero-metric-val" id="hero-weekly-change">—</span>
+                <span class="hero-metric-lbl">vs last week</span>
+              </div>
+              <div class="hero-metric">
+                <span class="hero-metric-val" id="hero-score">—</span>
+                <span class="hero-metric-lbl">Carbon Score</span>
+              </div>
+              <div class="hero-metric">
+                <span class="hero-metric-val" id="hero-streak">—</span>
+                <span class="hero-metric-lbl">Day Streak</span>
+              </div>
+            </div>
+            <p class="hero-biggest" id="hero-biggest">Adjust the calculator below to see your footprint</p>
+          </div>
+        </div>
+
+        <!-- CARBON CALCULATOR -->
+        <h2 class="section-title">Your Carbon Calculator</h2>
+        <div class="calc-grid" id="calc-grid">
+
+          <!-- Transport -->
+          <div class="calc-card" id="calc-card-transport">
+            <div class="calc-card-header">
+              <span class="calc-emoji">🚗</span>
+              <span class="calc-cat-name">Transportation</span>
+              <span class="calc-cat-val" id="cc-val-transport">0.0 kg</span>
+            </div>
+            <label class="calc-label">Mode</label>
+            <div class="chip-grid compact">
+              <button class="chip on" data-v="two-wheeler" onclick="pickCalcChip('transport-mode',this)">🏍️ Bike</button>
+              <button class="chip" data-v="car" onclick="pickCalcChip('transport-mode',this)">🚗 Car</button>
+              <button class="chip" data-v="auto" onclick="pickCalcChip('transport-mode',this)">🛺 Auto</button>
+              <button class="chip" data-v="metro" onclick="pickCalcChip('transport-mode',this)">🚇 Metro</button>
+              <button class="chip" data-v="bus" onclick="pickCalcChip('transport-mode',this)">🚌 Bus</button>
+            </div>
+            <label class="calc-label">Daily distance (km)</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="calc-km" min="0" max="100" value="10" oninput="recalcFromCalc()"><span class="slider-val" id="calc-v-km">10</span></div>
+            <div class="calc-card-bar"><div class="calc-bar-fill" id="cc-bar-transport"></div></div>
+          </div>
+
+          <!-- Food -->
+          <div class="calc-card" id="calc-card-food">
+            <div class="calc-card-header">
+              <span class="calc-emoji">🍛</span>
+              <span class="calc-cat-name">Food & Diet</span>
+              <span class="calc-cat-val" id="cc-val-food">0.0 kg</span>
+            </div>
+            <label class="calc-label">Diet type</label>
+            <div class="chip-grid compact">
+              <button class="chip on" data-v="mixed" onclick="pickCalcChip('meal-type',this)">🍽️ Mixed</button>
+              <button class="chip" data-v="veg" onclick="pickCalcChip('meal-type',this)">🥦 Veg</button>
+              <button class="chip" data-v="non-veg" onclick="pickCalcChip('meal-type',this)">🍗 Non-Veg</button>
+              <button class="chip" data-v="vegan" onclick="pickCalcChip('meal-type',this)">🌱 Vegan</button>
+            </div>
+            <label class="calc-label">Food deliveries today</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="calc-deliveries" min="0" max="5" value="1" oninput="recalcFromCalc()"><span class="slider-val" id="calc-v-del">1</span></div>
+            <div class="calc-card-bar"><div class="calc-bar-fill" id="cc-bar-food"></div></div>
+          </div>
+
+          <!-- Energy -->
+          <div class="calc-card" id="calc-card-energy">
+            <div class="calc-card-header">
+              <span class="calc-emoji">⚡</span>
+              <span class="calc-cat-name">Household Energy</span>
+              <span class="calc-cat-val" id="cc-val-energy">0.0 kg</span>
+            </div>
+            <label class="calc-label">AC hours today</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="calc-ac" min="0" max="24" value="3" oninput="recalcFromCalc()"><span class="slider-val" id="calc-v-ac">3h</span></div>
+            <label class="calc-label">Heavy appliances used</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="calc-appliances" min="0" max="10" value="2" oninput="recalcFromCalc()"><span class="slider-val" id="calc-v-app">2</span></div>
+            <div class="calc-card-bar"><div class="calc-bar-fill" id="cc-bar-energy"></div></div>
+          </div>
+
+          <!-- Shopping -->
+          <div class="calc-card" id="calc-card-shopping">
+            <div class="calc-card-header">
+              <span class="calc-emoji">📦</span>
+              <span class="calc-cat-name">Shopping</span>
+              <span class="calc-cat-val" id="cc-val-shopping">0.0 kg</span>
+            </div>
+            <label class="calc-label">Packages received today</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="calc-packages" min="0" max="5" value="0" oninput="recalcFromCalc()"><span class="slider-val" id="calc-v-pkg">0</span></div>
+            <div class="calc-card-bar"><div class="calc-bar-fill" id="cc-bar-shopping"></div></div>
+          </div>
+
+          <!-- Waste -->
+          <div class="calc-card" id="calc-card-waste">
+            <div class="calc-card-header">
+              <span class="calc-emoji">🗑️</span>
+              <span class="calc-cat-name">Waste</span>
+              <span class="calc-cat-val" id="cc-val-waste">0.0 kg</span>
+            </div>
+            <label class="calc-label">Segregate waste?</label>
+            <div class="chip-grid compact">
+              <button class="chip on" data-v="yes" onclick="pickCalcChip('waste-seg',this)">✅ Yes</button>
+              <button class="chip" data-v="no" onclick="pickCalcChip('waste-seg',this)">❌ No</button>
+            </div>
+            <div class="calc-card-bar"><div class="calc-bar-fill" id="cc-bar-waste"></div></div>
+          </div>
+
+          <!-- Water -->
+          <div class="calc-card" id="calc-card-water">
+            <div class="calc-card-header">
+              <span class="calc-emoji">💧</span>
+              <span class="calc-cat-name">Water Usage</span>
+              <span class="calc-cat-val" id="cc-val-water">0.0 kg</span>
+            </div>
+            <label class="calc-label">Daily usage (litres)</label>
+            <div class="slider-row"><input type="range" class="premium-slider" id="calc-water" min="20" max="500" value="120" oninput="recalcFromCalc()"><span class="slider-val" id="calc-v-water">120L</span></div>
+            <div class="calc-card-bar"><div class="calc-bar-fill" id="cc-bar-water"></div></div>
+          </div>
+        </div>
+
+        <!-- SPOTIFY WRAPPED - "This Week, You..." -->
+        <h2 class="section-title">This Week, You…</h2>
+        <div class="wrapped-scroll" id="wrapped-scroll"></div>
+
+        <!-- PERSONALIZED INSIGHTS -->
+        <h2 class="section-title">Personalized Insights</h2>
+        <div class="insights-stack" id="insights-stack"></div>
+
+        <!-- WEEKLY LANDSCAPE -->
+        <div class="glass weekly-glass gap-top">
+          <div class="glass-head"><h3 class="glass-title">Weekly Landscape</h3><button class="link-btn" onclick="goPage('analytics')">View all →</button></div>
+          <div class="bar-chart" id="weekly-bars"></div>
+          <div class="day-labels" id="weekly-days"></div>
+          <div class="stat-row">
+            <div class="stat-box"><span class="stat-num" id="st-today">0 kg</span><span class="stat-lbl">Today</span></div>
+            <div class="stat-box hl"><span class="stat-num" id="st-week">0 kg</span><span class="stat-lbl">This Week</span></div>
+            <div class="stat-box"><span class="stat-num" id="st-delta">—</span><span class="stat-lbl">vs Last Week</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ EARTH TWIN PAGE ═══ -->
+      <section class="pg" id="pg-earth">
+        <div class="pg-head"><div><p class="pg-eyebrow">YOUR DIGITAL EARTH</p><h1 class="pg-title">Earth Twin</h1></div></div>
+        <div class="earth-hero-glass">
+          <div class="earth-wrap">
+            <canvas id="earth-canvas" width="700" height="700"></canvas>
+            <div class="earth-overlay" id="earth-overlay">
+              <span class="earth-status" id="earth-status">Healthy</span>
+              <span class="earth-temp" id="earth-temp">+0.8°C</span>
+            </div>
+          </div>
+          <div class="earth-indicators" id="earth-inds"></div>
+        </div>
+
+        <h2 class="section-title gap-top">If Everyone Lived Like You <span class="sec-badge">Global Impact</span></h2>
+        <div class="impact-grid" id="impact-grid"></div>
+
+        <div class="glass" style="margin-top:2rem;">
+          <h3 class="glass-title">Earth in 2050</h3>
+          <p class="glass-sub">Based on your current habits</p>
+          <div class="future-compare">
+            <div class="future-col"><canvas id="earth-bad" width="260" height="260"></canvas><h4>If you continue</h4><p class="future-temp bad" id="ft-bad">+2.4°C</p></div>
+            <div class="future-vs"><span>VS</span></div>
+            <div class="future-col"><canvas id="earth-good" width="260" height="260"></canvas><h4>If you go green</h4><p class="future-temp good" id="ft-good">+1.2°C</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ ANALYTICS PAGE ═══ -->
+      <section class="pg" id="pg-analytics">
+        <div class="pg-head">
+          <div><p class="pg-eyebrow">Deep Insights</p><h1 class="pg-title">Analytics</h1></div>
+          <div class="pill-group"><button class="pill on" id="tf-week" onclick="setTF('week')">Week</button><button class="pill" id="tf-month" onclick="setTF('month')">Month</button><button class="pill" id="tf-year" onclick="setTF('year')">Year</button></div>
+        </div>
+        <div class="glass"><h3 class="glass-title">Emission Breakdown</h3><p class="glass-sub">Where your carbon comes from</p><div class="flow-bars" id="flow-bars"></div><div class="flow-footer"><span class="flow-total" id="flow-total">0 kg</span><span class="flow-lbl-text">CO₂ Total</span><span class="trend-tag" id="flow-trend">—</span></div></div>
+        <div class="glass" style="margin-top:1.5rem;"><h3 class="glass-title">Activity Heatmap</h3><p class="glass-sub">Last 84 days</p><div class="heatmap" id="heatmap"></div><div class="heatmap-key"><span>Low</span><div class="hkey-bar"></div><span>High</span></div></div>
+        <div class="glass" style="margin-top:1.5rem;"><h3 class="glass-title">Category Ranking</h3><div class="ranking" id="ranking"></div></div>
+        <div class="glass" style="margin-top:1.5rem;"><h3 class="glass-title">Projection</h3><p class="glass-sub">Where you're headed</p><div class="forecast-chart" id="forecast-chart"></div><div class="forecast-scenarios" id="forecast-sc"></div></div>
+      </section>
+
+      <!-- ═══ SIMULATE PAGE ═══ -->
+      <section class="pg" id="pg-simulate">
+        <div class="pg-head"><div><p class="pg-eyebrow">Carbon Twin</p><h1 class="pg-title">Simulate Changes</h1></div></div>
+        <div class="glass sim-glass">
+          <h3 class="glass-title">What if you changed your habits?</h3>
+          <p class="glass-sub">Adjust the sliders to see your future carbon self.</p>
+          <div class="sim-time-pills"><button class="pill on" onclick="simTF(1,this)">1 Month</button><button class="pill" onclick="simTF(12,this)">1 Year</button><button class="pill" onclick="simTF(60,this)">5 Years</button></div>
+          <div class="sim-layout">
+            <div class="sim-sliders">
+              <div class="sim-row"><div class="sim-info"><span>🚌 Car → Public Transit</span><span class="sim-metric" id="sm-transit">0 days/wk</span></div><input type="range" class="premium-slider accent-green" id="sim-transit" min="0" max="7" value="0" oninput="simCalc()"></div>
+              <div class="sim-row"><div class="sim-info"><span>🥦 Non-veg → Veg meals</span><span class="sim-metric" id="sm-veg">0 meals/wk</span></div><input type="range" class="premium-slider accent-green" id="sim-veg" min="0" max="21" value="0" oninput="simCalc()"></div>
+              <div class="sim-row"><div class="sim-info"><span>☀️ Switch to solar</span><span class="sim-metric" id="sm-solar">No</span></div><input type="range" class="premium-slider accent-green" id="sim-solar" min="0" max="1" value="0" oninput="simCalc()"></div>
+              <div class="sim-row"><div class="sim-info"><span>🔋 Switch to EV</span><span class="sim-metric" id="sm-ev">No</span></div><input type="range" class="premium-slider accent-green" id="sim-ev" min="0" max="1" value="0" oninput="simCalc()"></div>
+              <div class="sim-row"><div class="sim-info"><span>✈️ Fewer flights/year</span><span class="sim-metric" id="sm-fly">0</span></div><input type="range" class="premium-slider accent-green" id="sim-fly" min="0" max="10" value="0" oninput="simCalc()"></div>
+            </div>
+            <div class="sim-results">
+              <div class="sim-pair">
+                <div class="sim-box"><span class="sim-lbl">Current You</span><span class="sim-big" id="sim-cur">0</span><span class="sim-unit">kg CO₂</span></div>
+                <div class="sim-arrow">→</div>
+                <div class="sim-box green-glow"><span class="sim-lbl">Future You</span><span class="sim-big green" id="sim-fut">0</span><span class="sim-unit">kg CO₂</span></div>
+              </div>
+              <div class="sim-saves" id="sim-saves"></div>
+            </div>
+          </div>
+          <div class="sim-banner" id="sim-banner" style="display:none"><span id="sim-banner-txt"></span></div>
+        </div>
+
+        <h2 class="section-title gap-top">AI Recommendations</h2>
+        <div class="recs-stack" id="recs-stack"></div>
+        <h2 class="section-title gap-top-sm">Active Challenges</h2>
+        <div class="challenges-stack" id="challenges-stack"></div>
+      </section>
+
+      <!-- ═══ LEGACY PAGE ═══ -->
+      <section class="pg" id="pg-legacy">
+        <div class="pg-head"><div><p class="pg-eyebrow">Your Legacy</p><h1 class="pg-title">Legacy</h1></div></div>
+        <div class="glass">
+          <div class="prof-top">
+            <div class="prof-av-wrap"><div class="prof-av-ring"><div class="prof-av" id="prof-av"><span id="prof-initials">CU</span></div></div><div class="prof-streak-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span id="prof-streak">0 days</span></div></div>
+            <div class="prof-info"><h2 id="prof-name">Canopy User</h2><p class="prof-since" id="prof-since">Canopy Explorer</p>
+              <div class="prof-stats">
+                <div class="ps"><span class="ps-val" id="ps-saved">0 kg</span><span class="ps-lbl">CO₂ Saved</span></div>
+                <div class="ps"><span class="ps-val" id="ps-score">0</span><span class="ps-lbl">Score</span></div>
+                <div class="ps"><span class="ps-val" id="ps-money">₹0</span><span class="ps-lbl">Saved</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="glass" style="margin-top:1.5rem;"><h3 class="glass-title">Real World Impact</h3><p class="glass-sub">What your saved carbon equals</p><div class="equiv-grid" id="equiv-grid"></div></div>
+        <div class="glass" style="margin-top:1.5rem;"><h3 class="glass-title">Milestones</h3><div class="badge-grid" id="badge-grid"></div></div>
+        <div class="glass" style="margin-top:1.5rem;"><h3 class="glass-title">Monthly Report</h3><p class="glass-sub" id="report-month"></p><div class="report-body" id="report-body"></div><button class="outline-btn" onclick="downloadReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Report</button></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ═══════════ QUICK LOG MODAL ═══════════ -->
+  <div class="modal-bg" id="quick-log-modal" onclick="closeModalBg(event)">
+    <div class="modal-card">
+      <div class="modal-head"><h2>Quick Log</h2><button class="x-btn" onclick="closeQuickLog()">×</button></div>
+      <div class="modal-body">
+        <div class="ql-tabs">
+          <button class="ql-tab on" data-t="commute" onclick="qlTab(this)">🚗 Commute</button>
+          <button class="ql-tab" data-t="meal" onclick="qlTab(this)">🍛 Meal</button>
+          <button class="ql-tab" data-t="purchase" onclick="qlTab(this)">📦 Purchase</button>
+          <button class="ql-tab" data-t="flight" onclick="qlTab(this)">✈️ Flight</button>
+        </div>
+        <div class="ql-pane" id="ql-commute">
+          <label class="wiz-lbl">Vehicle type</label>
+          <div class="chip-grid compact"><button class="chip on" data-v="two-wheeler" onclick="pickChip('ql-vehicle',this)">🏍️ Two-Wheeler</button><button class="chip" data-v="car" onclick="pickChip('ql-vehicle',this)">🚗 Car</button><button class="chip" data-v="auto" onclick="pickChip('ql-vehicle',this)">🛺 Auto</button><button class="chip" data-v="metro" onclick="pickChip('ql-vehicle',this)">🚇 Metro</button><button class="chip" data-v="bus" onclick="pickChip('ql-vehicle',this)">🚌 Bus</button></div>
+          <label class="wiz-lbl">Distance (km)</label>
+          <div class="slider-row"><input type="range" class="premium-slider" id="ql-km" min="1" max="100" value="10" oninput="document.getElementById('ql-km-val').innerText=this.value+' km'"><span class="slider-val" id="ql-km-val">10 km</span></div>
+        </div>
+        <div class="ql-pane" id="ql-meal" style="display:none">
+          <label class="wiz-lbl">Meal type</label>
+          <div class="chip-grid compact"><button class="chip on" data-v="veg" onclick="pickChip('ql-meal',this)">🥦 Veg</button><button class="chip" data-v="egg" onclick="pickChip('ql-meal',this)">🥚 Egg</button><button class="chip" data-v="non-veg" onclick="pickChip('ql-meal',this)">🍗 Non-Veg</button></div>
+          <label class="wiz-lbl">Sourcing</label>
+          <div class="chip-grid compact"><button class="chip on" data-v="home" onclick="pickChip('ql-source',this)">🏠 Home</button><button class="chip" data-v="delivery" onclick="pickChip('ql-source',this)">📱 Delivery</button><button class="chip" data-v="dine-out" onclick="pickChip('ql-source',this)">🍽️ Dine Out</button></div>
+        </div>
+        <div class="ql-pane" id="ql-purchase" style="display:none">
+          <label class="wiz-lbl">Amount (₹)</label>
+          <div class="slider-row"><input type="range" class="premium-slider" id="ql-amount" min="100" max="10000" step="100" value="500" oninput="document.getElementById('ql-amount-val').innerText='₹'+this.value"><span class="slider-val" id="ql-amount-val">₹500</span></div>
+          <label class="wiz-lbl">Category</label>
+          <div class="chip-grid compact"><button class="chip on" data-v="electronics" onclick="pickChip('ql-cat',this)">📱 Electronics</button><button class="chip" data-v="clothing" onclick="pickChip('ql-cat',this)">👕 Clothing</button><button class="chip" data-v="groceries" onclick="pickChip('ql-cat',this)">🛒 Groceries</button></div>
+        </div>
+        <div class="ql-pane" id="ql-flight" style="display:none">
+          <label class="wiz-lbl">Flight type</label>
+          <div class="chip-grid compact"><button class="chip on" data-v="domestic" onclick="pickChip('ql-fly',this)">🇮🇳 Domestic</button><button class="chip" data-v="intl" onclick="pickChip('ql-fly',this)">🌍 International</button></div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="primary-btn full" onclick="submitQuickLog()">Log Activity</button></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ DRAWERS ═══════════ -->
+  <div class="drawer-bg" id="drawer-settings" onclick="closeDrawerBg(event,'settings')">
+    <div class="drawer">
+      <div class="drawer-head"><h2>Settings</h2><button class="x-btn" onclick="closeDrawer('settings')">×</button></div>
+      <div class="drawer-body">
+        <p class="settings-h">Profile</p>
+        <div class="field"><label>Display Name</label><input type="text" class="fi" id="set-name" value=""></div>
+        <div class="field"><label>Monthly Budget (kg CO₂)</label><input type="number" class="fi" id="set-budget" value="200" min="50" max="1000"></div>
+      </div>
+      <div class="drawer-foot"><button class="primary-btn full" onclick="saveSettings()">Save Settings</button></div>
+    </div>
+  </div>
+  <div class="drawer-bg" id="drawer-notifs" onclick="closeDrawerBg(event,'notifs')">
+    <div class="drawer">
+      <div class="drawer-head"><h2>Notifications</h2><button class="x-btn" onclick="closeDrawer('notifs')">×</button></div>
+      <div class="drawer-body" id="notifs-body"></div>
+      <div class="drawer-foot"><button class="outline-btn full" onclick="markAllRead()">Mark All Read</button></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+    <span id="toast-text">Done.</span>
+  </div>
+  <script type="module" src="src/js/app.js"></script>
+</body>
+</html>
